@@ -90,7 +90,7 @@ git pull origin master
 pwd
 
 # import config file
- source $config_dir/install.cfg
+ source $config_dir/formula.sh
 
 # Check for Homebrew
 if test ! $(which brew); then
