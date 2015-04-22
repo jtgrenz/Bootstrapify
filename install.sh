@@ -11,7 +11,7 @@ config_dir=$bootstrap_dir/lib
 bootstrapify=Bootstrapify
 git_master=https://github.com/jtgrenz/Bootstrapify.git
 xcode_path='$(xcode-select -p)'
-
+app_dir="/Applications"
 # important commands
 
 
@@ -133,7 +133,7 @@ do
   if [[ ! $tmp ]]; then
     echo ''
     echo '##### Installing '$app'...'
-    brew install $app
+    brew cask install --appdir=$appdir $app
   fi
 done
 
