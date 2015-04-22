@@ -129,7 +129,7 @@ done
 # Install Apps
 for app in $Apps
 do
-  tmp=`brew list | grep $app`
+  tmp=`brew cask list | grep $app`
   if [[ ! $tmp ]]; then
     echo ''
     echo '##### Installing '$app'...'
