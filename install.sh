@@ -11,7 +11,7 @@ config_dir=$bootstrap_dir/lib
 bootstrapify=Bootstrapify
 git_master=https://github.com/jtgrenz/Bootstrapify.git
 xcode_path='$(xcode-select -p)'
-app_dir="/Applications"
+
 # important commands
 
 
@@ -107,39 +107,9 @@ echo "#### Updating homebrew and homebrew-cask"
 brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
 
 
-# Apps to be pulled from brew-cask
-export Apps='
-    sublime-text
-    slack
-    github
-    alfred
-    google-chromebrew doct
-    firefox
-    textexpander
-    recordit
-    totalTerminal
-  '
-
-# Binaries to be pulled from brew
-export Binaries='
-    graphicsmagick
-    ffmpeg
-    python
-    sshfs
-    node
-    tree
-    git
-    npm
-    grunt
-    rbenv
-    ruby-build
-    bash
-    zsh
-    findutils
-    coreutils
-'
 
 
+echo "#### Preparing to install homebrew formula"
 
 # Install Binaries
 for bin in $Binaries
@@ -170,7 +140,7 @@ do
   if [[ ! $tmp ]]; then
     echo ''
     echo '##### Installing '$app'...'
-    brew cask install --appdir=$appdir $app
+    brew cask install $app
   fi
 done
 
