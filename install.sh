@@ -90,7 +90,7 @@ git pull origin master
 pwd
 
 # import config file
-source $config_dir/install.cfg
+# source $config_dir/install.cfg
 
 # Check for Homebrew
 if test ! $(which brew); then
@@ -105,6 +105,41 @@ fi
 
 echo "#### Updating homebrew and homebrew-cask"
 brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
+
+
+# Apps to be pulled from brew-cask
+export Apps='
+    sublime-text
+    slack
+    github
+    alfred
+    google-chromebrew doct
+    firefox
+    textexpander
+    recordit
+    totalTerminal
+  '
+
+# Binaries to be pulled from brew
+export Binaries='
+    graphicsmagick
+    ffmpeg
+    python
+    sshfs
+    node
+    tree
+    git
+    npm
+    grunt
+    rbenv
+    ruby-build
+    bash
+    zsh
+    findutils
+    coreutils
+'
+
+
 
 # Install Binaries
 for bin in $Binaries
