@@ -80,11 +80,13 @@ if [[ ! -d $bootstrap_dir ]]; then
   echo
 else
   echo "#### $bootstrapify found"
+
   echo
 fi
 
 echo "changing to bootstrap directory..."
 cd $bootstrap_dir
+git pull origin master
 pwd
 
 # import config file
