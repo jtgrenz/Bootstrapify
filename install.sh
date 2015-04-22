@@ -9,10 +9,11 @@
 bootstrap_dir=$HOME/.bootstrapify
 config_dir=$bootstrap_dir/lib
 bootstrapify=Bootstrapify
-git_master=git@github.com:jtgrenz/bootstrapify.git
+git_master=https://github.com/jtgrenz/Bootstrapify.git
+xcode_path='$(xcode-select -p)'
 
 # important commands
-install_homebrew=ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 
 
 ##############################################################
@@ -49,7 +50,7 @@ echo "#### Checking for Xcode commandline tools..."
 echo
 
 # check for xcode
-if [[ $(xcode-select -p) != "/Applications/Xcode.app/Contents/Developer" ]]; then
+if [[  $(xcode-select -p) != "/Applications/Xcode.app/Contents/Developer" ]]  && [[ $(xcode-select -p) != "/Library/Developer/CommandLineTools" ]] ; then
 
   echo ' !! You must install xcode commandline tools first. '
   echo ' !! Click agree on the prompt to install and run this script again'
@@ -59,6 +60,15 @@ else
   echo '#### Xcode comandline tools found. Proceeding with bootstrap...'
 fi
 
+echo "#### Checking for exisiting SSH Keys"
+
+if [[ ! -e $HOME/.ssh/id_rsa ]]; then
+  echo "id_rsa not found. Generating new ssh key"
+      mkdir -p $HOME/.ssh && cd $HOME/.ssh
+     ssh-keygen -b 1024 -t rsa -f id_rsa -P ""
+  else
+    echo "SSH key found"
+fi
 
 
 echo "#### Checking for existing $bootstrapify install"
@@ -78,16 +88,16 @@ cd $bootstrap_dir
 pwd
 
 # import config file
-source $config_dir/config.cfg
+source $config_dir/install.cfg
 
 # Check for Homebrew
 if test ! $(which brew); then
   echo "#### Installing homebrew..."
-  $install_homebrew
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 if test ! $(which brew-cask); then
-  echo "#### Installinh homebrew-cask"
+  echo "#### Installing homebrew-cask"
   brew install caskroom/cask/brew-cask
 fi
 
