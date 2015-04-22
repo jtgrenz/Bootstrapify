@@ -115,8 +115,27 @@ do
   fi
 done
 
+# Install Binaries
+for bin in $Binaries
+do
+  tmp=`brew list | grep $bin`
+  if [[ ! $tmp ]]; then
+    echo ''
+    echo '##### Installing Formula '$bin'...'
+    brew install $bin
+  fi
+done
 
-
+# Install Apps
+for app in $Apps
+do
+  tmp=`brew list | grep $app`
+  if [[ ! $tmp ]]; then
+    echo ''
+    echo '##### Installing '$app'...'
+    brew install $app
+  fi
+done
 
 
 
