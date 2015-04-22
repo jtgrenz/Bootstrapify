@@ -4,14 +4,13 @@
 export Apps='
     sublime-text
     slack
-    #monosnap (needs cask)
     github
     alfred
-    chrome
+    google-chrome
     firefox
     textexpander
     recordit
-    totalTerminal
+    totalterminal
   '
 
 # Binaries to be pulled from brew
@@ -19,12 +18,10 @@ export Binaries='
     graphicsmagick
     ffmpeg
     python
-    sshfs
     node
     tree
     git
     npm
-    grunt
     rbenv
     ruby-build
     bash
@@ -38,7 +35,7 @@ export Gems='
     shopify-theme
 '
 
-export Misc=''
+export Misc='
     solarize
     oh-my-zsh
 '
