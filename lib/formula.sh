@@ -1,7 +1,7 @@
 
 
 # Apps to be pulled from brew-cask
-Apps=(
+export Apps='
     sublime-text
     slack
     #monosnap (needs cask)
@@ -12,10 +12,10 @@ Apps=(
     textexpander
     recordit
     totalTerminal
-  )
+  '
 
 # Binaries to be pulled from brew
-Binaries=(
+export Binaries='
     graphicsmagick
     ffmpeg
     python
@@ -31,15 +31,15 @@ Binaries=(
     zsh
     findutils
     coreutils
-)
+'
 
 
-Gems=(
+export Gems='
     shopify-theme
-)
+'
 
-Misc=(
+export Misc=''
     solarize
     oh-my-zsh
-)
+'
 
