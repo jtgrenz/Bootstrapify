@@ -60,7 +60,7 @@ else
   echo '#### Xcode comandline tools found. Proceeding with bootstrap...'
 fi
 
-echo "#### Checking for exisiting SSH Keys"
+echo "#### Checking for existing SSH Keys"
 
 if [[ ! -e $HOME/.ssh/id_rsa ]]; then
   echo "id_rsa not found. Generating new ssh key"
@@ -108,7 +108,6 @@ brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
 
 
 
-
 echo "#### Preparing to install homebrew formula"
 
 # Install Binaries
@@ -144,6 +143,18 @@ do
   fi
 done
 
+# Setup Git Global Config
+
+echo "#### Setting up git"
+echo "Enter your first and last name and press [ENTER]"
+read name
+echo "Enter your email address and press [ENTER]"
+read email
+git congig --global "$name"
+git config --global $email
+echo "Git User and Email setup as:"
+git config --get user.name
+git config --get user.email
 
 
 
