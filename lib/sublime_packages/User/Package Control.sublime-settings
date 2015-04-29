@@ -1,0 +1,18 @@
+{
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Dotfiles Syntax Highlighting",
+		"Glue",
+		"Google Spell Check",
+		"Package Control",
+		"rsub",
+		"Siteleaf Liquid Syntax",
+		"Solarized Color Scheme",
+		"Syntax Highlighting for Sass",
+		"Theme - Soda",
+		"Theme - Sodarized"
+	]
+}

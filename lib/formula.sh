@@ -11,6 +11,7 @@ export Apps='
     textexpander
     recordit
     totalterminal
+    sococo
   '
 
 # Binaries to be pulled from brew
@@ -92,15 +93,13 @@ do
   fi
 done
 
-# Setup Git Global Config
+echo "#### Verifying Sublime Install"
+if [[ -e "$HOME/Library/Application Support/Sublime Text 2/Packages" ]]; then
+  echo "#### Found Sublime Text 2. Installing Bootstrapify Packages..."
+  ln -nsf $config_dir/sublime_packages/*  "$HOME/Library/Application Support/Sublime Text 2/Packages"
+else
+  echo "#### Error! Sublime Text 2 is not installed. Better check Brew Cask settings."
+  echo "#### Skipping Sublime Package Install"
+fi
 
-echo "#### Setting up git"
-echo "Enter your first and last name and press [ENTER]"
-read name
-echo "Enter your email address and press [ENTER]"
-read email
-git congig --global "$name"
-git config --global $email
-echo "Git User and Email setup as:"
-git config --get user.name
-git config --get user.email
+

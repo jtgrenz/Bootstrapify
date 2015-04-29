@@ -1,0 +1,17 @@
+{
+	"color_scheme": "Packages/Solarized Color Scheme/Solarized (dark).tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"ignored_packages":
+	[
+	],
+	"rulers":
+	[
+		80
+	],
+	"tab_size": 2,
+	"theme": "Soda Dark.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"spell_check": true,
+	"dictionary": "Packages/Language - English/en_US.dic"
+}
