@@ -67,8 +67,8 @@ echo "Enter your first and last name and press [ENTER]"
 read name
 echo "Enter your email address and press [ENTER]"
 read email
-git congig --global "$name"
-git config --global $email
+git config --global "$name"
+git config --global "$email"
 echo "Git User and Email setup as:"
 git config --get user.name
 git config --get user.email
@@ -104,7 +104,7 @@ git pull origin master
 pwd
 
 # import config file
- source_dir $config_dir
+ source $config_dir/formula.sh
 
 
 
