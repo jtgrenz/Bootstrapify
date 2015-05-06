@@ -8,7 +8,7 @@ echo "#### Checking for Sublime Text 2"
 if [[ -e "$HOME/Library/Application Support/Sublime Text 2/Packages" ]]; then
   echo "#### Found Sublime Text 2. Would you like to overwrite exisiting packages with Bootstrapify packages? (Y or N)"
   read input
-  if [[input == Y ]]; then
+  if [[$input == Y ]]; then
     mv "$HOME/Library/Application Support/Sublime Text 2/Packages" "$HOME/Library/Application Support/Sublime Text 2/pre-bootstrapify-packages"
     cp $config_dir/sublime_packages/*  "$HOME/Library/Application Support/Sublime Text 2/Packages"
   fi
