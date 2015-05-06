@@ -2,8 +2,8 @@
 
 
 default_ruby='2.2.1'
-bashrc='$HOME/.bash_profile'
-zshrc='$HOME/.zshrc'
+bashrc="$HOME/.bash_profile"
+zshrc="$HOME/.zshrc"
 
 
 echo "#### Checking for Sublime Text 2"
@@ -28,7 +28,7 @@ echo "#### Installing Ruby"
   rbenv install $default_ruby
   rbenv global $default_ruby
 
-echo "#### Installing Shopify-Theme Gem"
+echo "#### Installing Shopify Theme Gem"
   gem install shopify_theme
 
 echo "#### Installing Oh-My-Zsh"
