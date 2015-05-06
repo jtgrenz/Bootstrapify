@@ -14,7 +14,7 @@ if [[ -e "$HOME/Library/Application Support/Sublime Text 2/Packages" ]]; then
   fi
 else
   echo "#### Sublime Text 2 Packages not found. Installing Packages"
-  mkdir "$HOME/Library/Application Support/Sublime Text 2/Packages"
+  mkdir -p "$HOME/Library/Application Support/Sublime Text 2/Packages"
   cp $config_dir/sublime_packages/*  "$HOME/Library/Application Support/Sublime Text 2/Packages"
 fi
 
