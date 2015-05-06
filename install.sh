@@ -60,6 +60,12 @@ else
   echo '#### Xcode comandline tools found. Proceeding with bootstrap...'
 fi
 
+# Get sudo and keep alive
+echo "#### Please Enter your login password (you should be the admin)"
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+
 # Setup Git Global Config
 
 echo "#### Setting up git"
@@ -104,7 +110,11 @@ git pull origin master
 pwd
 
 # import config file
- source $config_dir/formula.sh
+ source $config_dir/homebrew.sh
+ source $config_dir/general.sh
+ source $config_dir/ruby.sh
+
+
 
 
 

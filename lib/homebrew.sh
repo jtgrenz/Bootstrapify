@@ -1,4 +1,5 @@
-
+# Homebrew install setup
+#TODO create monosnap cask
 
 # Apps to be pulled from brew-cask
 export Apps='
@@ -10,8 +11,8 @@ export Apps='
     firefox
     textexpander
     recordit
-    totalterminal
     sococo
+    totalterminal
   '
 
 # Binaries to be pulled from brew
@@ -29,16 +30,6 @@ export Binaries='
     zsh
     findutils
     coreutils
-'
-
-
-export Gems='
-    shopify-theme
-'
-
-export Misc='
-    solarize
-    oh-my-zsh
 '
 
 
@@ -93,13 +84,6 @@ do
   fi
 done
 
-echo "#### Verifying Sublime Install"
-if [[ -e "$HOME/Library/Application Support/Sublime Text 2/Packages" ]]; then
-  echo "#### Found Sublime Text 2. Installing Bootstrapify Packages..."
-  ln -nsf $config_dir/sublime_packages/*  "$HOME/Library/Application Support/Sublime Text 2/Packages"
-else
-  echo "#### Error! Sublime Text 2 is not installed. Better check Brew Cask settings."
-  echo "#### Skipping Sublime Package Install"
-fi
+
 
 
