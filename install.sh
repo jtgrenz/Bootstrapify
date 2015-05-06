@@ -50,7 +50,7 @@ echo "First we will check if Xcode is installed. If its not, we will try to
 install it, but you will need to run this script again when its done"
 echo "Did you want to continue ? (Y / N)"
 read input
-if [[ $input ! "Y" ]] then
+if [[ $input != "Y" ]] then
   echo "Maybe another time then. Goodbye!"
   exit 0
 fi
@@ -77,7 +77,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Setup Git Global Config
 echo "#### Checking for git setup"
-if [[ $(git config --global user.name) ! "" && $(git config --global user.email) ! ""]]; then
+if [[ $(git config --global user.name) != "" && $(git config --global user.email) != ""]]; then
   echo "#### Git Configured Already"
 else
   echo "#### Setting up git"
