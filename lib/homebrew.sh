@@ -23,13 +23,17 @@ export Binaries='
     node
     tree
     git
-    npm
     rbenv
     ruby-build
     bash
     zsh
     findutils
     coreutils
+'
+
+export NPM='
+  grunt-cli
+  gulp
 '
 
 
@@ -57,7 +61,7 @@ do
   tmp=`brew list | grep $bin`
   if [[ ! $tmp ]]; then
     echo ''
-    echo '##### Installing Formula '$bin'...'
+    echo '##### Installing '$bin'...'
     brew install $bin
   fi
 done
@@ -84,6 +88,15 @@ do
   fi
 done
 
-
+# Use Install Grunt
+for app in $NPM
+do
+  tmp=`npm list -g | grep $app`
+  if [[ ! $tmp ]]; then
+    echo ''
+    echo '##### Installing '$app'...'
+    npm install $app -g
+  fi
+done
 
 

@@ -2,6 +2,8 @@
 
 
 default_ruby='2.2.1'
+bashrc='$HOME/.bash_profile'
+zshrc='$HOME/.zshrc'
 
 
 echo "#### Checking for Sublime Text 2"
@@ -27,16 +29,16 @@ echo "#### Installing Ruby"
   rbenv global $default_ruby
 
 echo "#### Installing Shopify-Theme Gem"
-  gem install shopify-theme
+  gem install shopify_theme
 
 echo "#### Installing Oh-My-Zsh"
   curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
 echo "#### Updating Bash and zsh settings"
-echo "export PATH=$HOME/.bin:$PATH" >> .bash_profile
-echo "export PATH=$HOME/.bin:$PATH" >> .zshrc
+echo "export PATH=$HOME/.bin:$PATH" >> $bashrc
+echo "export PATH=$HOME/.bin:$PATH" >> $zshrc
 # Sets sublime text to be the default editor instead of nano or vim
-echo "export EDITOR='subl -w'" >> .bash_profile
-echo "export EDITOR='subl -w'" >> .zshrc
+echo "export EDITOR='subl -w'" >> $bashrc
+echo "export EDITOR='subl -w'" >> $zshrc
 
 
