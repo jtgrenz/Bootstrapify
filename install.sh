@@ -50,7 +50,7 @@ echo "First we will check if Xcode is installed. If its not, we will try to
 install it, but you will need to run this script again when its done"
 echo "Did you want to continue ? (Y / N)"
 read input
-if [[ $input ! "Y" ]]; then
+if [[ $input ! "Y" ]] then
   echo "Maybe another time then. Goodbye!"
   exit 0
 fi
