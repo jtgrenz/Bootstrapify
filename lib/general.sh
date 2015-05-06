@@ -42,3 +42,19 @@ echo "export EDITOR='subl -w'" >> $bashrc
 echo "export EDITOR='subl -w'" >> $zshrc
 
 
+echo "#### Setting up FileVault2 Disk Encryption"
+echo "#### We are now enabling disk encryption on your mac. Your mac will restart
+and you will be prompted for your login password again. When you log back in, there
+will be a file called Filevault_recovery.plist on your desktop. Save it somewhere
+safe thats not this mac (email it to yourself or use dropbox). It contains
+a recovery password if you forget your password. Delete the file from the desktop
+once you made a copy. "
+echo "Press any key to continue"
+read input
+sudo fdesetup enable -defer $HOME/Desktop/FileVault_recovery.plist
+echo "#### Restarting now"
+sudo shutdown -r now
+
+
+
+
