@@ -73,8 +73,8 @@ echo "Enter your first and last name and press [ENTER]"
 read name
 echo "Enter your email address and press [ENTER]"
 read email
-git config --global "$name"
-git config --global "$email"
+git config --global user.name "$name"
+git config --global user.email "$email"
 echo "Git User and Email setup as:"
 git config --get user.name
 git config --get user.email
