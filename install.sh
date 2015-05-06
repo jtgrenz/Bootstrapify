@@ -44,7 +44,14 @@ ______             _       _                   _  __
 
 EOF
 
-
+echo "This script will install everything you need to get started on the Shopify Support team."
+echo "First we will check if Xcode is installed. If its not, we will try to instal it, but you will need to run this script again when its done"
+echo "Did you want to continue ? (Y / N)"
+read input
+if [[ $input != "Y"]]; then
+  echo "Maybe another time then. Goodbye!"
+  exit 0
+fi
 
 echo "#### Checking for Xcode commandline tools..."
 echo
@@ -67,18 +74,21 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 
 # Setup Git Global Config
-
-echo "#### Setting up git"
-echo "Enter your first and last name and press [ENTER]"
-read name
-echo "Enter your email address and press [ENTER]"
-read email
-git config --global user.name "$name"
-git config --global user.email "$email"
-echo "Git User and Email setup as:"
-git config --get user.name
-git config --get user.email
-
+echo "#### Checking for git setup"
+if [[ $(git config --global user.name) != "" && $(git config --global user.email) != ""]]; then
+  echo "#### Git Configured Already"
+else
+  echo "#### Setting up git"
+  echo "Enter your first and last name and press [ENTER]"
+  read name
+  echo "Enter your email address and press [ENTER]"
+  read email
+  git config --global user.name "$name"
+  git config --global user.email "$email"
+fi
+ echo "Git User and Email setup as:"
+  git config --get user.name
+  git config --get user.email
 
 echo "#### Checking for existing SSH Keys"
 
