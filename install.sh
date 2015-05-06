@@ -77,7 +77,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Setup Git Global Config
 echo "#### Checking for git setup"
-if [[ $(git config --global user.name) != "" ]] && [[$(git config --global user.email) != ""]]; then
+if [[ "$(git config --global user.name)" != "" ]] && [[ "$(git config --global user.email)" != ""]]; then
   echo "#### Git Configured Already"
 else
   echo "#### Setting up git"
