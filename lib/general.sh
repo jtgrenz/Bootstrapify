@@ -40,6 +40,9 @@ echo "export PATH=$HOME/.bin:$PATH" >> $zshrc
 # Sets sublime text to be the default editor instead of nano or vim
 echo "export EDITOR='subl -w'" >> $bashrc
 echo "export EDITOR='subl -w'" >> $zshrc
+echo "export PATH='~/.rbenv/shims:$PATH'" >> $bashrc
+echo "export PATH='~/.rbenv/shims:$PATH'" >> $zshrc
+
 
 
 # echo "#### Setting up FileVault2 Disk Encryption"

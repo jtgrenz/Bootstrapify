@@ -17,9 +17,6 @@ export Apps='
 
 # Binaries to be pulled from brew
 export Binaries='
-    graphicsmagick
-    ffmpeg
-    python
     node
     tree
     git
@@ -27,8 +24,6 @@ export Binaries='
     ruby-build
     bash
     zsh
-    findutils
-    coreutils
 '
 
 export NPM='

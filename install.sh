@@ -124,7 +124,7 @@ pwd
 # import config file
  source $config_dir/homebrew.sh
  source $config_dir/general.sh
- source $config_dir/ruby.sh
+ # source $config_dir/ruby.sh
 
 
 
