@@ -12,7 +12,6 @@ export Apps='
     textexpander
     recordit
     sococo
-    totalterminal
   '
 
 # Binaries to be pulled from brew
