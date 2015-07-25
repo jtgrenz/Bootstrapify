@@ -150,6 +150,10 @@ pwd
  source $config_dir/general.sh
 
 
+echo "$FORMAT #### Installation Complete. Now, Shopify till you Dropify!"
+
+
+
 
 
 
