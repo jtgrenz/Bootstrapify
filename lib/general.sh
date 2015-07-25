@@ -34,13 +34,13 @@ echo "$FORMAT #### Installing Oh-My-Zsh"
   curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
 echo "$FORMAT #### Updating Bash and zsh settings"
-echo "$FORMAT export PATH=$HOME/.bin:$PATH" >> $bashrc
-echo "$FORMAT export PATH=$HOME/.bin:$PATH" >> $zshrc
+echo "export PATH=$HOME/.bin:$PATH" >> $bashrc
+echo "export PATH=$HOME/.bin:$PATH" >> $zshrc
 # Sets sublime text to be the default editor instead of nano or vim
-echo "$FORMAT export EDITOR='subl -w'" >> $bashrc
-echo "$FORMAT export EDITOR='subl -w'" >> $zshrc
-echo "$FORMAT export PATH='~/.rbenv/shims:$PATH'" >> $bashrc
-echo "$FORMAT export PATH='~/.rbenv/shims:$PATH'" >> $zshrc
+echo "export EDITOR='subl -w'" >> $bashrc
+echo "export EDITOR='subl -w'" >> $zshrc
+echo "export PATH='~/.rbenv/shims:$PATH'" >> $bashrc
+echo "export PATH='~/.rbenv/shims:$PATH'" >> $zshrc
 
 
 
