@@ -1,9 +1,7 @@
 # General configurations
 
-default_ruby='2.2.1'
 bashrc="$HOME/.bash_profile"
 zshrc="$HOME/.zshrc"
-
 
 echo "$FORMAT #### Checking for Sublime Text 2"
 if [[ -e "$HOME/Library/Application Support/Sublime Text 2/Packages" ]]; then
@@ -23,12 +21,6 @@ echo "$FORMAT #### Linking Subl "
   mkdir $HOME/.bin
   ln -s "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" ~/.bin/subl
 
-echo "$FORMAT #### Installing Ruby"
-  rbenv install $default_ruby
-  rbenv global $default_ruby
-
-echo "$FORMAT #### Installing Shopify Theme Gem"
-  gem install shopify_theme
 
 echo "$FORMAT #### Installing Oh-My-Zsh"
   curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh

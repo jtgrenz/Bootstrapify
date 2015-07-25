@@ -146,8 +146,9 @@ pwd
   source $config_dir/homebrew-cask.sh
  fi
  source $config_dir/npm-install.sh
+ source $config_dir/ruby.sh
  source $config_dir/general.sh
- # source $config_dir/ruby.sh
+
 
 
 
