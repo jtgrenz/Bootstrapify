@@ -14,6 +14,7 @@ xcode_path='$(xcode-select -p)'
 
 # important commands
 
+FORMAT='\e[44m '
 
 
 ##############################################################
@@ -44,18 +45,18 @@ ______             _       _                   _  __
 
 EOF
 
-echo "This script will install everything you need to get started on the Shopify
+echo -e "$FORMAT This script will install everything you need to get started on the Shopify
 Support team."
-echo "First we will check if Xcode is installed. If its not, we will try to
+echo -e "$FORMAT First we will check if Xcode is installed. If its not, we will try to
 install it, but you will need to run this script again when its done"
-echo "Did you want to continue ? (Y / N)"
+echo -e "$FORMAT Did you want to continue ? (Y / N)"
 read input
 if [ $input != "Y" ]; then
-  echo "Maybe another time then. Goodbye!"
+  echo -e "$FORMAT Maybe another time then. Goodbye!"
   exit 0
 fi
 
-echo "#### Checking for Xcode commandline tools..."
+echo -e "$FORMAT #### Checking for Xcode commandline tools..."
 echo
 
 # check for xcode
@@ -70,59 +71,78 @@ else
 fi
 
 # Get sudo and keep alive
-echo "#### Please Enter your login password (you should be the admin)"
+echo -e "$FORMAT #### Please Enter your login password (you should be the admin)"
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 
+# Check for install type
+
+echo -e "$FORMAT #### Did you want to run experimental full install or theme support CLI only?"
+proceed=false
+
+while [$proceed == false ]
+echo -e "$FORMAT #### Enter FULL or CLI to continue or control + c to abort the installer"
+    read install_type
+  if [[ "$install_type" == "FULL" || "$install_type" == "CLI" ]]; then
+    proceed=true
+  fi
+done
+
 # Setup Git Global Config
-echo "#### Checking for git setup"
+echo -e "$FORMAT #### Checking for git setup"
 if [ "$(git config --global user.name)" != "" ] && [ "$(git config --global user.email)" != ""]; then
-  echo "#### Git Configured Already"
+  echo -e "$FORMAT #### Git Configured Already"
 else
-  echo "#### Setting up git"
-  echo "Enter your first and last name and press [ENTER]"
+  echo -e "$FORMAT #### Setting up git"
+  echo -e "$FORMAT Enter your first and last name and press [ENTER]"
   read name
-  echo "Enter your email address and press [ENTER]"
+  echo -e "$FORMAT Enter your SHOPIFY email address and press [ENTER]"
   read email
   git config --global user.name "$name"
   git config --global user.email "$email"
 fi
- echo "Git User and Email setup as:"
+ echo -e "$FORMAT Git User and Email setup as:"
   git config --get user.name
   git config --get user.email
 
-echo "#### Checking for existing SSH Keys"
+echo -e "$FORMAT #### Checking for existing SSH Keys"
 
 if [[ ! -e $HOME/.ssh/id_rsa ]]; then
-  echo "id_rsa not found. Generating new ssh key"
+  echo -e "$FORMAT id_rsa not found. Generating new ssh key"
       mkdir -p $HOME/.ssh && cd $HOME/.ssh
      ssh-keygen -b 1024 -t rsa -f id_rsa -P ""
   else
-    echo "SSH key found"
+    echo -e "$FORMAT SSH key found"
 fi
 
 
-echo "#### Checking for existing $bootstrapify install"
+echo -e "$FORMAT #### Checking for existing $bootstrapify install"
 if [[ ! -d $bootstrap_dir ]]; then
-  echo "#### $bootstrapify not found"
-  echo "#### Downloading $bootstrapify..."
+  echo -e "$FORMAT #### $bootstrapify not found"
+  echo -e "$FORMAT #### Downloading $bootstrapify..."
   echo
   git clone $git_master $bootstrap_dir
   echo
 else
-  echo "#### $bootstrapify found"
+  echo -e "$FORMAT #### $bootstrapify found"
 
   echo
 fi
 
-echo "changing to bootstrap directory..."
+echo -e "$FORMAT changing to bootstrap directory..."
 cd $bootstrap_dir
 git pull origin master
 pwd
 
+
 # import config file
+
  source $config_dir/homebrew.sh
+ if [[ "$install_type" == "FULL" ]]; then
+  source $config_dir/homebrew-cask.sh
+ fi
+ source $config_dir/npm-install.sh
  source $config_dir/general.sh
  # source $config_dir/ruby.sh
 
