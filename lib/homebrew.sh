@@ -15,14 +15,14 @@ export Binaries='
 
 # Check for Homebrew
 if test ! $(which brew); then
-  echo -e "$FORMAT #### Installing homebrew..."
+  echo "$FORMAT #### Installing homebrew..."
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-echo -e "$FORMAT #### Updating homebrew"
+echo "$FORMAT #### Updating homebrew"
 brew update && brew cleanup
 
-echo -e "$FORMAT #### Preparing to install homebrew formula"
+echo "$FORMAT #### Preparing to install homebrew formula"
 
 
 # Install Binaries
@@ -31,7 +31,7 @@ do
   tmp=`brew list | grep $bin`
   if [[ ! $tmp ]]; then
     echo ''
-    echo '##### Installing Formula '$bin'...'
+    echo "$FORMAT ##### Installing $RED $bin..."
     brew install $bin
   fi
 done

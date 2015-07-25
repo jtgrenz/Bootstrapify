@@ -14,11 +14,11 @@ export Apps='
   '
 
 if test ! $(which brew-cask); then
-  echo -e "$FORMAT #### Installing homebrew-cask"
+  echo "$FORMAT #### Installing homebrew-cask"
   brew install caskroom/cask/brew-cask
 fi
 
-echo -e "$FORMAT #### Updating homebrew and homebrew-cask"
+echo "$FORMAT #### Updating homebrew and homebrew-cask"
 brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
 
 
@@ -28,7 +28,7 @@ do
   tmp=`brew cask list | grep $app`
   if [[ ! $tmp ]]; then
     echo ''
-    echo '##### Installing '$app'...'
+    echo "$FORMAT ##### Installing $RED $app ..."
     brew cask install $app
   fi
 done

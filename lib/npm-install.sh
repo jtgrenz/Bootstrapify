@@ -11,7 +11,7 @@ do
   tmp=`npm list -g | grep $app`
   if [[ ! $tmp ]]; then
     echo ''
-    echo '##### Installing '$app'...'
+    echo "$FORMAT ##### Installing $RED $app ..."
     npm install $app -g
   fi
 done
