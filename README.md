@@ -37,6 +37,11 @@ Via General.sh:
 
 Ruby version 2.2.1 (via rbenv's ruby-build)
 
+Additionally, you will be prompted to link sublime packages if you installed sublime text. This isn't nesecary, but it will give you the solarized theme for sublime text as well as liquid syntax highlighting for .liquid, .js.liquid and .scss.liquid files. You can say yes or no to this when prompted and if you use text-mate or another editor, its irrelevant.
+
+[![alt](https://screenshot.click/25-31-vgm89-cxnwe.jpg)](https://screenshot.click/25-31-vgm89-cxnwe.jpg) 
+*solarized and sodaized theme for sublime text installed via the sublime packages option*
+
 
 ## Apps and Tools Installed under FULL Mode
 
