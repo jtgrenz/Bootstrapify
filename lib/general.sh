@@ -27,15 +27,21 @@ echo "$FORMAT #### Installing Oh-My-Zsh"
 
 echo "$FORMAT #### Updating Bash and zsh settings"
 # sets up ~/.bin folder for sublime symlink. 
+echo "###### Bootstrapify Additions added $(date)  ###### "
+echo ""
 echo "export PATH=$HOME/.bin:$PATH" >> $bashrc
 echo "export PATH=$HOME/.bin:$PATH" >> $zshrc
 # Sets up path to accept rbenv properly.
 echo "export PATH='~/.rbenv/shims:~/.rbenv/bin:$PATH'" >> $bashrc
 echo "export PATH='~/.rbenv/shims:~/.rbenv/bin:$PATH'" >> $zshrc
+echo "eval "$(rbenv init -)"" >> $zshrc
+echo "eval "$(rbenv init -)"" >> $bashrc
 # Sets sublime text to be the default editor instead of nano or vim
 echo "export EDITOR='subl -w'" >> $bashrc
 echo "export EDITOR='subl -w'" >> $zshrc
-
+echo ""
+echo "###### End of Bootstrapify Additions added $(date)  ###### "
+echo ""
 
 
 
