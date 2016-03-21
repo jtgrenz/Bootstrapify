@@ -1,1 +1,0 @@
-{"description": "User settings to bring ShellScript (Bash) syntax highlighting to dotfiles", "url": "https://github.com/mattbanks/dotfiles-syntax-highlighting-st2", "platforms": ["*"], "version": "1.2.11", "sublime_text": "*", "dependencies": []}

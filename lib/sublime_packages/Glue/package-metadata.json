@@ -1,1 +1,0 @@
-{"description": "Glue is a plugin that joins your shell to Sublime Text in quasi-perfect harmony.", "url": "http://gluedocs.readthedocs.org/", "platforms": ["*"], "version": "0.9.5", "sublime_text": "*", "dependencies": []}
