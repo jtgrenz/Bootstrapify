@@ -350,7 +350,6 @@ def on_path?(bin)
 end
 #!/usr/bin/env ruby
 
-require 'net/http'
 require 'fileutils'
 include FileUtils
 include FormatableMessage
@@ -362,7 +361,7 @@ include InstallHelpers
    @@github_ssh_url = "https://github.com/settings/keys"
    @@authme_url = "https://authme.shopify.com/"
    @@atom_dark_theme_url = "https://raw.githubusercontent.com/jtgrenz/Bootstrapify/master/AtomDark.terminal"
-   @@homebrew_install_list = ["node", "bash", "zsh", "caskroom/cask/brew-cask"]
+   @@homebrew_install_list = ["node", "bash", "zsh", 'rbenv','ruby-build', "caskroom/cask/brew-cask"]
    @@homebrew_cask_install_list = ["sublime-text", "recordit", "atom", "alfred", "firefox"]
    @@ruby_gem_install_list = ["bundler", "colorize"]
    @@node_install_list = ["gulp"]
@@ -423,8 +422,7 @@ include InstallHelpers
       msg "Checking for Homebrew"
       unless on_path? ("brew")
          warn "Homebrew not found. Installing Homebrew"
-         # download and run the homebrew installer in a ruby subprocess, but set stdin to null so homebrew works headless
-         status = system('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"', :in => "/dev/null")
+         status = system('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
          if status
             success "Homebrew installed"
             return true
@@ -484,9 +482,14 @@ include InstallHelpers
    end
 
    def install_ruby_gems
+      msg "Installing Ruby 2.3.0"
+      if on_path? 'rbenv'
+      `rbenv install 2.3.0`
+      `rbenv global 2.3.0`
+      end
       msg "Installing Ruby Gems"
       @@ruby_gem_install_list.each do |bin|
-         gem_install bin
+         install("#{ENV['HOME']}/.rbenv/shims/gem install", bin)
       end
       success "Ruby Gems Setup Compelte"
    end
@@ -509,7 +512,7 @@ include InstallHelpers
       elsif File.exist? "/Applications/Sublime Text.app"
          ln_sf "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
       elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text 2.app"
-         ln_sf File.exist? "#{ENV['HOME']}/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
+         ln_sf "#{ENV['HOME']}/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
       elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text.app"
          ln_sf "#{ENV['HOME']}/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
       else
@@ -520,9 +523,17 @@ include InstallHelpers
 
    def configure_profiles
       msg "Configuring Bash and ZSH profiles"
+      touch @@bashrc
+      touch @@zshrc
       symlink_sublime_text
-      `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.bashrc`
-      `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.zshrc`
+      `echo "#rbenv" >> #{@@bashrc}`
+      `echo "#rbenv" >> #{@@zshrc}`
+      `echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> #{@@bashrc}`
+      `echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> #{@@zshrc}`
+      `echo 'eval "$(rbenv init -)"' >> #{@@bashrc}`
+      `echo 'eval "$(rbenv init -)"' >> #{@@zshrc}`
+      `echo 'export EDITOR="atom -w" >> #{@@bashrc}`
+      `echo 'export EDITOR="atom -w"' >> #{@@zshrc}`
    end
 
    def install_terminal_theme
@@ -570,10 +581,10 @@ include InstallHelpers
       if install_node
          install_npm_list
       end
-      install_ruby_gems
       install_oh_my_zsh
       install_terminal_theme
       configure_profiles
+      install_ruby_gems
       print_final_github_instructions
       if @@exit_message.size > 0
          warn "The following warnings were noted during the install. Read over them"
