@@ -8,4 +8,3 @@ cat colorize/colorize.rb >> install.rb
 cat formatable_message.rb >> install.rb
 cat install_helpers.rb >> install.rb
 cat bootstrapify.rb >> install.rb
-ruby install.rb

@@ -505,6 +505,10 @@ include InstallHelpers
       end
    end
 
+   def change_shell(shell)
+      `chsh -s /bin/#{shell} $(whoami)`
+   end
+
    def symlink_sublime_text
       msg "Symlinking Sublime Text for commandline use"
       if File.exist? "/Applications/Sublime Text 2.app"
@@ -585,6 +589,7 @@ include InstallHelpers
       install_terminal_theme
       configure_profiles
       install_ruby_gems
+      change_shell('zsh')
       print_final_github_instructions
       if @@exit_message.size > 0
          warn "The following warnings were noted during the install. Read over them"
