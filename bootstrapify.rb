@@ -23,12 +23,13 @@ include InstallHelpers
    def install_xcode
       msg "Checking for Xcode commandline tools"
       xcode_path = `xcode-select -p`.chomp
-      if xcode_path != "/Applications/Xcode.app/Contents/Developer"
+      if xcode_path == "/Applications/Xcode.app/Contents/Developer" or xcode_path == "/Library/Developer/CommandLineTools"
+         success "Xcode installed"
+      else
          warn "Xcode not installed. Please enter your password at the next prompt and install Xcode. Then run this script again "
          `xcode-select --install`
          exit 0
-      else
-         success "Xcode installed"
+
       end
    end
 
