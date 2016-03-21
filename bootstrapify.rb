@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'net/http'
 require 'fileutils'
 include FileUtils
 include FormatableMessage
@@ -72,9 +73,11 @@ include InstallHelpers
       msg "Checking for Homebrew"
       unless on_path? ("brew")
          warn "Homebrew not found. Installing Homebrew"
-         `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-         if $?.success?
+         # download and run the homebrew installer in a ruby subprocess, but set stdin to null so homebrew works headless
+         status = system('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"', :in => "/dev/null")
+         if status
             success "Homebrew installed"
+            return true
          else
             error "Homebrew not installed. Unknown error has occured"
             @@exit_message.push "Homebrew has not installed. Please check manual setup for details on what to do next."

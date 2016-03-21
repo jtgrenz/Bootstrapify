@@ -2,7 +2,7 @@
 module FormatableMessage
    def format_msg(msg, color, header_length=60)
        puts "*".colorize(color.intern) * header_length unless header_length == 0
-       puts msg.colorize(color.intern)
+       puts msg.to_s.colorize(color.intern)
        puts "*".colorize(color.intern) * header_length unless header_length == 0
        puts
      end
