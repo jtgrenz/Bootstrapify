@@ -560,11 +560,11 @@ include InstallHelpers
    def print_final_github_instructions
       success "Setup Complete"
       instruct "This concludes the Bootstrapify setup. There are just a few final things you need to do."
-      instruct "Go to #{@@github_ssh_url} to upload the SSH keys we generated. Click new key and paste the following"
+      instruct "Go to #{@@github_ssh_url.underline} to upload the SSH keys we generated. Click new key and paste the following"
       puts
       instruct read_ssh_pub_key.chomp
       puts
-      instruct "Make sure you are authorized to access Shopify's Github Repos by going to #{@@authme_url}"
+      instruct "Make sure you are authorized to access Shopify's Github Repos by going to #{@@authme_url.underline}"
       instruct "Ping your squad lead to make sure you have been added to the Shopify Themes team on gitub via the Spy bot."
       puts
    end
