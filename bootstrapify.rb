@@ -41,12 +41,12 @@ include InstallHelpers
          instruct "git username not found"
          instruct "Enter your first and last name and press enter :"
          git_username = STDIN.gets.chomp
-         `git config --global user.name #{git_username}`
+         `git config --global user.name "#{git_username}"`
       end
 
       if git_email == "" or !git_email.include? "@shopify.com"
          instruct "git email not found or is not a shopify email"
-         while git_email.include? "@shopify.com" == false
+         while !git_email.include? "@shopify.com"
             instruct "Enter your @shopify.com email address and press enter:"
             git_email = STDIN.gets.chomp
          end
