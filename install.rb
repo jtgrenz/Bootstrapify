@@ -534,15 +534,14 @@ include InstallHelpers
       symlink_sublime_text
       `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.bashrc`
       `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.zshrc`
-
    end
 
    def install_terminal_theme
       msg "Installing Atom Dark Terminal Theme"
-      # `curl -O #{@@atom_dark_theme_url}`
+       `curl -O #{@@atom_dark_theme_url}`
       if File.exist? "atomdark.terminal"
          `open atomdark.terminal`
-         # `rm atomdark.terminal`
+         `rm atomdark.terminal`
          `defaults write com.apple.Terminal "Default Window Settings" 'AtomDark'`
          `defaults write com.apple.Terminal "Startup Window Settings" 'AtomDark'`
          success "Installed Atom Dark Terminal theme. Your eyes will thank you"
@@ -559,8 +558,6 @@ include InstallHelpers
    end
 
    def print_final_github_instructions
-      puts
-      puts
       success "Setup Complete"
       instruct "This concludes the Bootstrapify setup. There are just a few final things you need to do."
       instruct "Go to #{@@github_ssh_url} to upload the SSH keys we generated. Click new key and paste the following"

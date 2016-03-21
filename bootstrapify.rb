@@ -184,7 +184,6 @@ include InstallHelpers
       symlink_sublime_text
       `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.bashrc`
       `echo "export EDITOR='atom -w'" >> #{ENV['HOME']}/.zshrc`
-
    end
 
    def install_terminal_theme
