@@ -355,27 +355,12 @@ include FileUtils
 include FormatableMessage
 include InstallHelpers
 
-# TODO
- # - Install Xcode
- # - Setup git
- # - Create SSH Keys
- # - AuthMe
- # - Add user to team
- # - install homebrew
- # - install node
- # - install rbenv
- # - install oh my zsh
- # - install bundler
- # - install gulp -g
- # - set default editor
- # - symlink atom and sublime
-
  module Bootstrapify
    extend self
 
    @@github_ssh_url = "https://github.com/settings/keys"
    @@authme_url = "https://authme.shopify.com/"
-   @@atom_dark_theme_url = "https://github.com/jtgrenz/Bootstrapify/blob/master/atomdark.terminal"
+   @@atom_dark_theme_url = "https://raw.githubusercontent.com/jtgrenz/Bootstrapify/master/AtomDark.terminal"
    @@homebrew_install_list = ["node", "bash", "zsh", "caskroom/cask/brew-cask"]
    @@homebrew_cask_install_list = ["sublime-text", "recordit", "atom", "alfred", "firefox"]
    @@ruby_gem_install_list = ["bundler", "colorize"]
