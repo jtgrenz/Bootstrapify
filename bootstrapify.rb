@@ -188,7 +188,7 @@ include InstallHelpers
 
    def install_terminal_theme
       msg "Installing Atom Dark Terminal Theme"
-       `curl -O #{@@atom_dark_theme_url}`
+       `curl -O --metalink #{@@atom_dark_theme_url}`
       if File.exist? "atomdark.terminal"
          `open atomdark.terminal`
          `rm atomdark.terminal`
