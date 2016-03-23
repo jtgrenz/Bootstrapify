@@ -362,7 +362,7 @@ include InstallHelpers
    @@authme_url = "https://authme.shopify.com/"
    @@atom_dark_theme_url = "https://raw.githubusercontent.com/jtgrenz/Bootstrapify/master/AtomDark.terminal"
    @@homebrew_install_list = ["node", "bash", "zsh", 'rbenv','ruby-build', "caskroom/cask/brew-cask"]
-   @@homebrew_cask_install_list = ["sublime-text", "recordit", "atom", "alfred", "firefox"]
+   @@homebrew_cask_install_list = ["recordit", "atom", "alfred", "firefox"]
    @@ruby_gem_install_list = ["bundler", "colorize"]
    @@node_install_list = ["gulp"]
 
@@ -372,58 +372,85 @@ include InstallHelpers
 
    def install_xcode
       msg "Checking for Xcode commandline tools"
-      xcode_path = `xcode-select -p`.chomp
-      if xcode_path == "/Applications/Xcode.app/Contents/Developer" or xcode_path == "/Library/Developer/CommandLineTools"
-         success "Xcode installed"
-      else
-         warn "Xcode not installed. Please enter your password at the next prompt and install Xcode. Then run this script again "
-         `xcode-select --install`
-         exit 0
-
+      begin
+         xcode_path = `xcode-select -p`.chomp
+         if xcode_path == "/Applications/Xcode.app/Contents/Developer" or xcode_path == "/Library/Developer/CommandLineTools"
+            if xcode_path == "/Applications/Xcode.app/Contents/Developer"
+               msg "Xcode Installed. Please enter your admin password to agree to the Xcode License agreement"
+               @status == false
+               while @status != true
+                 msg "Please press space to scroll down and type #{"agree".green.underline} to accept."
+                 system("sudo xcodebuild -license")
+                 @status = $?.success?
+               end
+            end
+            success "Xcode installed"
+         else
+            warn "Xcode not installed. Please enter your password at the next prompt and install Xcode. Then run this script again "
+            `xcode-select --install`
+            exit 0
+         end
+      rescue Exception => e
+         error "An error has occured with Xcode and we are unable to continue"
+         error e.message
+         exit 1
       end
    end
 
    def set_git_config
-      git_username = `git config --global user.name`.chomp
-      git_email = `git config --global user.email`.chomp
+      begin
+         git_username = `git config --global user.name`.chomp
+         git_email = `git config --global user.email`.chomp
 
-      if git_username == ""
-         instruct "git username not found"
-         instruct "Enter your first and last name and press enter :"
-         git_username = STDIN.gets.chomp
-         `git config --global user.name "#{git_username}"`
-      end
-
-      if git_email == "" or !git_email.include? "@shopify.com"
-         instruct "git email not found or is not a shopify email"
-         while !git_email.include? "@shopify.com"
-            instruct "Enter your @shopify.com email address and press enter:"
-            git_email = STDIN.gets.chomp
+         if git_username == ""
+            instruct "git username not found"
+            instruct "Enter your first and last name and press enter :"
+            git_username = STDIN.gets.chomp
+            `git config --global user.name "#{git_username}"`
          end
-         `git config --global user.email #{git_email}`
+
+         if git_email == "" or !git_email.include? "@shopify.com"
+            instruct "git email not found or is not a shopify email"
+            while !git_email.include? "@shopify.com"
+               instruct "Enter your @shopify.com email address and press enter:"
+               git_email = STDIN.gets.chomp
+            end
+            `git config --global user.email #{git_email}`
+         end
+         success "Git defaults set to name: #{git_username} email: #{git_email}"
+      rescue Exception => e
+         error_msg = "Unable to set Git config. Please set these manually"
+         error error_msg
+         @@exit_message << error_msg
+         error e.message
       end
-      success "Git defaults set to name: #{git_username} email: #{git_email}"
    end
 
    def generate_SSH_keys
       msg "Checking for existing SSH keys"
-      if File.exist? "#{ENV['HOME']}/.ssh/id_rsa" and File.exist? "#{ENV['HOME']}/.ssh/id_rsa.pub"
-         success "Found id_rsa and id_rsa.pub"
-      else
-         warn "Exisitng SSH Keys not found"
-         msg "Generating fresh SSH keys for GitHub.com"
-         `ssh-keygen -b 1024 -t rsa -f #{ENV['HOME']}/.ssh/id_rsa -P ""`
-         success "Generated ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub"
+      begin
+         if File.exist? "#{ENV['HOME']}/.ssh/id_rsa" and File.exist? "#{ENV['HOME']}/.ssh/id_rsa.pub"
+            success "Found id_rsa and id_rsa.pub"
+         else
+            warn "Exisitng SSH Keys not found"
+            msg "Generating fresh SSH keys for GitHub.com"
+            `ssh-keygen -b 1024 -t rsa -f #{ENV['HOME']}/.ssh/id_rsa -P ""`
+            success "Generated ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub"
+         end
+      rescue Exception => e
+         error_msg = "Unable to generate SSH Keys. Please generate manually following the manual instructions"
+         error e.message
+         @@exit_message << error_msg
       end
-
    end
 
    def install_homebrew
       msg "Checking for Homebrew"
       unless on_path? ("brew")
          warn "Homebrew not found. Installing Homebrew"
-         status = system('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
-         if status
+         system('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+         status = $?.success?
+         if status and on_path?('brew')
             success "Homebrew installed"
             return true
          else
@@ -509,27 +536,30 @@ include InstallHelpers
       `chsh -s /bin/#{shell} $(whoami)`
    end
 
-   def symlink_sublime_text
-      msg "Symlinking Sublime Text for commandline use"
-      if File.exist? "/Applications/Sublime Text 2.app"
-         ln_sf "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-      elsif File.exist? "/Applications/Sublime Text.app"
-         ln_sf "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-      elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text 2.app"
-         ln_sf "#{ENV['HOME']}/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-      elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text.app"
-         ln_sf "#{ENV['HOME']}/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-      else
-         warn "Sublime Text not found. Unable to symlink"
-         @@exit_message.push "Was Unable to Symlink Sublime Text. Make sure its instlled and refer to Manual install instructions for details"
-      end
-   end
+   # Transitiontioning away from Sublime Text in favor of Atom. Uncomment to bring
+   # back symlinking for sublime text
+   #
+   # def symlink_sublime_text
+   #    msg "Symlinking Sublime Text for commandline use"
+   #    if File.exist? "/Applications/Sublime Text 2.app"
+   #       ln_sf "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
+   #    elsif File.exist? "/Applications/Sublime Text.app"
+   #       ln_sf "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
+   #    elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text 2.app"
+   #       ln_sf "#{ENV['HOME']}/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
+   #    elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text.app"
+   #       ln_sf "#{ENV['HOME']}/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
+   #    else
+   #       warn "Sublime Text not found. Unable to symlink"
+   #       @@exit_message.push "Was Unable to Symlink Sublime Text. Make sure its instlled and refer to Manual install instructions for details"
+   #    end
+   # end
 
    def configure_profiles
       msg "Configuring Bash and ZSH profiles"
       touch @@bashrc
       touch @@zshrc
-      symlink_sublime_text
+      # symlink_sublime_text
       `echo "#rbenv" >> #{@@bashrc}`
       `echo "#rbenv" >> #{@@zshrc}`
       `echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> #{@@bashrc}`
@@ -564,13 +594,15 @@ include InstallHelpers
    def print_final_github_instructions
       success "Setup Complete"
       instruct "This concludes the Bootstrapify setup. There are just a few final things you need to do."
-      instruct "Go to #{@@github_ssh_url.underline} to upload the SSH keys we generated. Click new key and paste the following"
+      instruct "Go to #{@@github_ssh_url.underline} to upload the SSH keys we generated. Click #{"New SSH Key".yellow.underline} and paste the following"
       puts
       instruct read_ssh_pub_key.chomp
       puts
       instruct "Make sure you are authorized to access Shopify's Github Repos by going to #{@@authme_url.underline}"
       instruct "Ping your squad lead to make sure you have been added to the Shopify Themes team on gitub via the Spy bot."
       puts
+      `open #{@@github_ssh_url}`
+      `open #{@@authme_url}`
    end
 
    def run
