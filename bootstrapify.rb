@@ -9,7 +9,7 @@ include InstallHelpers
    extend self
 
    @@github_ssh_url = "https://github.com/settings/keys"
-   @@authme_url = "https://authme.shopify.com/"
+   @@authme_url = "https://authme.shopify.io"
    @@atom_dark_theme_url = "https://raw.githubusercontent.com/jtgrenz/Bootstrapify/master/AtomDark.terminal"
    @@homebrew_install_list = ["node", "bash", "zsh", 'rbenv','ruby-build', "caskroom/cask/brew-cask"]
    @@homebrew_cask_install_list = ["recordit", "atom", "alfred", "firefox"]
