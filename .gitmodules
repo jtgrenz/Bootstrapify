@@ -1,0 +1,3 @@
+[submodule "bootstrapify2"]
+	path = bootstrapify2
+	url = git@git.wasis.name:bootstrapify2
