@@ -11,11 +11,8 @@ include InstallHelpers
    @@github_ssh_url = "https://github.com/settings/keys"
    @@authme_url = "https://authme.shopify.io"
    @@atom_dark_theme_url = "https://raw.githubusercontent.com/jtgrenz/Bootstrapify/master/AtomDark.terminal"
-   @@homebrew_install_list = ["node", "bash", "zsh", 'rbenv','ruby-build', "caskroom/cask/brew-cask"]
-   @@homebrew_cask_install_list = ["recordit", "atom", "alfred", "firefox"]
-   @@ruby_gem_install_list = ["bundler", "colorize"]
-   @@node_install_list = ["gulp"]
-
+   @@homebrew_install_list = ["bash", "zsh" ]
+   @@homebrew_cask_install_list = ["recordit", "atom", "visual-studio-code", "alfred", "firefox", 'slack', 'zoom', 'tunnelbear', ]
    @@bashrc = "#{ENV['HOME']}/.bash_profile"
    @@zshrc = "#{ENV['HOME']}/.zshrc"
    @@exit_message = []
@@ -118,6 +115,7 @@ include InstallHelpers
       msg "Updating Homebrew"
       `brew update && brew cleanup`
       msg "Installing Homebrew Recipies"
+      `brew tap caskroom/cask`
       @@homebrew_install_list.each do |recipie|
          brew_install recipie
       end
@@ -127,6 +125,7 @@ include InstallHelpers
    def install_homebrew_gui_recipes
       # Homebrew Cask installs GUI apps like normal brew. We don't want to
       # duplicate apps if they are already installed in /Applications
+      msg "Installing Homebrew Cask Recipies"
       applications = (Dir.entries('/Applications').map { |e| e.downcase }).join(",")
       @@homebrew_cask_install_list.each do |app|
          unless applications.include? app.gsub("-", " ")
@@ -135,40 +134,7 @@ include InstallHelpers
             msg "#{app.gsub("-", " ")} already installed in /Applications"
          end
       end
-   end
-
-   def install_node
-      msg "Checking for node"
-      if on_path? "npm"
-         success "node and npm found"
-         return true
-      else
-         error "Node and Npm not found. This should have been installed by Homebrew.
-         If homebrew had an error, thats why this also failed."
-         @@exit_message.push "Node.js and NPM were not installed. Please see manual setup instructions for details on what to do next"
-         return false
-      end
-   end
-
-   def install_npm_list
-      msg "Installing Node Globals"
-      @@node_install_list.each do |bin|
-         npm_install(bin, "-g")
-      end
-      success "Node Setup Complete"
-   end
-
-   def install_ruby_gems
-      msg "Installing Ruby 2.3.0"
-      if on_path? 'rbenv'
-      `rbenv install 2.3.0`
-      `rbenv global 2.3.0`
-      end
-      msg "Installing Ruby Gems"
-      @@ruby_gem_install_list.each do |bin|
-         install("#{ENV['HOME']}/.rbenv/shims/gem install", bin)
-      end
-      success "Ruby Gems Setup Compelte"
+      success "Homebrew Cask Setup Complete"
    end
 
    def install_oh_my_zsh
@@ -186,54 +152,6 @@ include InstallHelpers
       `chsh -s /bin/#{shell} $(whoami)`
    end
 
-   # Transitiontioning away from Sublime Text in favor of Atom. Uncomment to bring
-   # back symlinking for sublime text
-   #
-   # def symlink_sublime_text
-   #    msg "Symlinking Sublime Text for commandline use"
-   #    if File.exist? "/Applications/Sublime Text 2.app"
-   #       ln_sf "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-   #    elsif File.exist? "/Applications/Sublime Text.app"
-   #       ln_sf "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-   #    elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text 2.app"
-   #       ln_sf "#{ENV['HOME']}/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-   #    elsif File.exist? "#{ENV['HOME']}/Applications/Sublime Text.app"
-   #       ln_sf "#{ENV['HOME']}/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl", "#{ENV['HOME']}/Applications/subl"
-   #    else
-   #       warn "Sublime Text not found. Unable to symlink"
-   #       @@exit_message.push "Was Unable to Symlink Sublime Text. Make sure its instlled and refer to Manual install instructions for details"
-   #    end
-   # end
-
-   def configure_profiles
-      msg "Configuring Bash and ZSH profiles"
-      touch @@bashrc
-      touch @@zshrc
-      # symlink_sublime_text
-      `echo "#rbenv" >> #{@@bashrc}`
-      `echo "#rbenv" >> #{@@zshrc}`
-      `echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> #{@@bashrc}`
-      `echo 'export PATH=$HOME/.rbenv/bin:$PATH' >> #{@@zshrc}`
-      `echo 'eval "$(rbenv init -)"' >> #{@@bashrc}`
-      `echo 'eval "$(rbenv init -)"' >> #{@@zshrc}`
-      `echo 'export EDITOR="atom -w" >> #{@@bashrc}`
-      `echo 'export EDITOR="atom -w"' >> #{@@zshrc}`
-   end
-
-   def install_terminal_theme
-      msg "Installing Atom Dark Terminal Theme"
-       `curl -O --metalink #{@@atom_dark_theme_url}`
-      if File.exist? "atomdark.terminal"
-         `open atomdark.terminal`
-         `rm atomdark.terminal`
-         `defaults write com.apple.Terminal "Default Window Settings" 'AtomDark'`
-         `defaults write com.apple.Terminal "Startup Window Settings" 'AtomDark'`
-         success "Installed Atom Dark Terminal theme. Your eyes will thank you"
-      else
-         warn "Could not auto install AtomDark Terminal theme. This is option. No worries!"
-      end
-   end
-
    def read_ssh_pub_key
       key_file = File.open("#{ENV['HOME']}/.ssh/id_rsa.pub", 'rb')
       key = key_file.read
@@ -241,18 +159,39 @@ include InstallHelpers
       return key
    end
 
+   def install_themekit 
+    msg "Installing Themekit"
+     `curl -s https://raw.githubusercontent.com/Shopify/themekit/master/scripts/install | sudo python`
+    if $?.success?
+      success "Themekit installed"
+    else
+        error "Themekit could not be installed"
+        @@exit_message.push "Themekit could not be installed. Please see https://shopify.github.io/themekit/#installation for details"
+    end
+   end
+
    def print_final_github_instructions
       success "Setup Complete"
       instruct "This concludes the Bootstrapify setup. There are just a few final things you need to do."
-      instruct "Go to #{@@github_ssh_url.underline} to upload the SSH keys we generated. Click #{"New SSH Key".yellow.underline} and paste the following"
+      instruct "Go to #{@@github_ssh_url.underline} to upload the SSH keys we generated. Click #{"New SSH Key".yellow.underline} and paste the following:"
       puts
       instruct read_ssh_pub_key.chomp
       puts
       instruct "Make sure you are authorized to access Shopify's Github Repos by going to #{@@authme_url.underline}"
       instruct "Ping your squad lead to make sure you have been added to the Shopify Themes team on gitub via the Spy bot."
       puts
+      instruct "#{'spy github add user <GITHUB_USERNAME> to Crafters'.underline} and #{'spy github add user <GITHUB_USERNAME> to PSFED'.underline}"
+      puts
       `open #{@@github_ssh_url}`
       `open #{@@authme_url}`
+      check_for_monosnap
+   end
+
+   def check_for_monosnap
+    applications = (Dir.entries('/Applications').map { |e| e.downcase }).join(",")
+    unless applications.include?('monosnap')
+     `open macappstores://itunes.apple.com/ru/app/monosnap/id540348655`
+    end
    end
 
    def run
@@ -264,13 +203,8 @@ include InstallHelpers
          install_homebrew_recipies
          install_homebrew_gui_recipes
       end
-      if install_node
-         install_npm_list
-      end
       install_oh_my_zsh
-      install_terminal_theme
-      configure_profiles
-      install_ruby_gems
+      install_themekit
       change_shell('zsh')
       print_final_github_instructions
       if @@exit_message.size > 0
@@ -279,7 +213,8 @@ include InstallHelpers
             instruct msg
          end
       end
-      msg "Exiting Bootstrapify"
+      msg "Exiting Bootstrapify and installing dev"
+      `eval "$(curl -sS https://dev.shopify.io/up)"`
    end
  end
 
